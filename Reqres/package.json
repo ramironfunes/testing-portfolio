@@ -1,0 +1,11 @@
+{
+  "name": "reqres-api-tests",
+  "version": "1.0.1",
+  "private": true,
+  "scripts": {
+    "test": "newman run ReqRes_API.postman_collection.json -e ReqRes_Env.postman_environment.json -r cli,html,junit --reporter-html-export results/report.html --reporter-junit-export results/report.xml"
+  },
+  "devDependencies": {
+    "newman": "^6.1.0"
+  }
+}
