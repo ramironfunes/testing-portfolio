@@ -1,0 +1,94 @@
+{
+  "info": {
+    "name": "DummyJSON API Tests (Strict Mode)",
+    "_postman_id": "strict-001",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Strict version with rigid validations. Shows real API defects \u274c."
+  },
+  "item": [
+    {
+      "name": "Users (Strict)",
+      "item": [
+        {
+          "name": "POST /users/add (invalid payload strict)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"foo\": \"bar\"}"
+            },
+            "url": "{{baseUrl}}/users/add"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Must return 4xx/5xx for invalid payload', () => pm.expect(pm.response.code).to.be.within(400,599));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Products (Strict)",
+      "item": [
+        {
+          "name": "PUT /products/{{productId}} (update strict)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"price\": 200}"
+            },
+            "url": "{{baseUrl}}/products/{{productId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Price must update correctly', () => pm.expect(pm.response.json().price).to.equal(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /products/{{productId}} (strict delete)",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/products/{{productId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Delete must return 200 or 204 only', () => pm.expect([200,204]).to.include(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
